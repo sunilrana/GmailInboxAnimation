@@ -20,11 +20,18 @@ import android.transition.Transition;
 import android.transition.TransitionSet;
 import android.view.ViewTreeObserver;
 
+import com.sunilrana.googleinboxanimation.DetailsFragment;
+import com.sunilrana.googleinboxanimation.OnItemClickListener;
+import com.sunilrana.googleinboxanimation.R;
+import com.sunilrana.googleinboxanimation.RecylerAdapter;
+import com.sunilrana.googleinboxanimation.SlideExplode;
+import com.sunilrana.googleinboxanimation.TransitionsKt;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class FirstFragment extends Fragment implements OnItemClickListener{
+public class FirstFragment extends Fragment implements OnItemClickListener {
 
     private FastOutSlowInInterpolator transitionInterpolator = new FastOutSlowInInterpolator();
     private long TRANSITION_DURATION = 800L;
@@ -34,6 +41,7 @@ public class FirstFragment extends Fragment implements OnItemClickListener{
     Rect viewRect = new Rect();
 
     RecyclerView recyclerView;
+
 
 
     public ArrayList<String> getData()
@@ -54,7 +62,6 @@ public class FirstFragment extends Fragment implements OnItemClickListener{
         super.onViewCreated(view, savedInstanceState);
         postponeEnterTransition();
         recyclerView = (RecyclerView)view.findViewById(R.id.emailList);
-        view.findViewById(R.id.progressBar).setVisibility(View.GONE);
         RecylerAdapter adapter = new RecylerAdapter(this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -73,33 +80,33 @@ public class FirstFragment extends Fragment implements OnItemClickListener{
     }
 
     private void setViewDrawListener(){
-        if (getView().getParent() instanceof ViewGroup){
-            ((ViewGroup) getView().getParent()).getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-
-                    if (getEnterTransition() == null) {
-                        SlideExplode slideExplode = new SlideExplode();
-                        slideExplode.setDuration(TRANSITION_DURATION)
-                                .setInterpolator(transitionInterpolator);
-
-                        setExitTransition(slideExplode);
-                    }
-                    View recylerViewitem = recyclerView.getLayoutManager().findViewByPosition(tapPosition);
-                    if(recylerViewitem != null)
-                        recylerViewitem.getGlobalVisibleRect(viewRect);
-
-                    ((Transition)getExitTransition()).setEpicenterCallback(new Transition.EpicenterCallback() {
-                        @Override
-                        public Rect onGetEpicenter(Transition transition) {
-                            return viewRect;
-                        }
-                    });
-                    startPostponedEnterTransition();
-                    return true;
-                }
-            });
-        }
+//        if (getView().getParent() instanceof ViewGroup){
+//            ((ViewGroup) getView().getParent()).getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//                @Override
+//                public boolean onPreDraw() {
+//
+//                    if (getEnterTransition() == null) {
+//                        SlideExplode slideExplode = new SlideExplode();
+//                        slideExplode.setDuration(TRANSITION_DURATION)
+//                                .setInterpolator(transitionInterpolator);
+//
+//                        setExitTransition(slideExplode);
+//                    }
+//                    View recylerViewitem = recyclerView.getLayoutManager().findViewByPosition(tapPosition);
+//                    if(recylerViewitem != null)
+//                        recylerViewitem.getGlobalVisibleRect(viewRect);
+//
+//                    ((Transition)getExitTransition()).setEpicenterCallback(new Transition.EpicenterCallback() {
+//                        @Override
+//                        public Rect onGetEpicenter(Transition transition) {
+//                            return viewRect;
+//                        }
+//                    });
+//                    startPostponedEnterTransition();
+//                    return true;
+//                }
+//            });
+//        }
     }
 
 
@@ -111,34 +118,36 @@ public class FirstFragment extends Fragment implements OnItemClickListener{
 
     public void addDetailFragment(View sharedView) {
 
-        sharedView.getGlobalVisibleRect(viewRect);
-        if(getExitTransition() != null) {
-            ((Transition) getExitTransition()).setEpicenterCallback(new Transition.EpicenterCallback() {
-                @Override
-                public Rect onGetEpicenter(Transition transition) {
-                    return viewRect;
-                }
-            });
-        }
-
-        TransitionSet sharedElementTransition = new TransitionSet()
-                .addTransition(new ChangeBounds())
-                .addTransition(new ChangeTransform())
-                .addTransition(new ChangeImageTransform())
-                .setDuration(TRANSITION_DURATION).setInterpolator(transitionInterpolator);
-
-        DetailsFragment detailsFragment = new DetailsFragment();
-        detailsFragment.setEnterTransition(sharedElementTransition);
-        detailsFragment.setExitTransition(sharedElementTransition);
-
-
-        getFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.container, detailsFragment)
-                .addToBackStack(null).addSharedElement(sharedView, getString(R.string.transition_name) ).commit();
-
-}
-
-
-
-
+//        sharedView.getGlobalVisibleRect(viewRect);
+//        if(getExitTransition() != null) {
+//            ((Transition) getExitTransition()).setEpicenterCallback(new Transition.EpicenterCallback() {
+//                @Override
+//                public Rect onGetEpicenter(Transition transition) {
+//                    return viewRect;
+//                }
+//            });
+//        }
+//
+//        TransitionSet sharedElementTransition = new TransitionSet()
+//                .addTransition(new ChangeBounds())
+//                .addTransition(new ChangeTransform())
+//                .addTransition(new ChangeImageTransform())
+//                .setDuration(TRANSITION_DURATION);
+//        TransitionsKt.setCommonInterpolator(sharedElementTransition,transitionInterpolator);
+//
+//
+//        DetailsFragment emailDetailsFragment = new DetailsFragment();
+//        emailDetailsFragment.setEnterTransition(sharedElementTransition);
+//        emailDetailsFragment.setExitTransition(sharedElementTransition);
+//
+//
+//        getFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.container, emailDetailsFragment)
+//                .addToBackStack(null).addSharedElement(sharedView, getString(R.string.transition_name) ).commit();
 
     }
+
+
+
+
+
+}

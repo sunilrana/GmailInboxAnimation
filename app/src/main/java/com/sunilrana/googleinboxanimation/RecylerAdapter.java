@@ -1,6 +1,9 @@
 package com.sunilrana.googleinboxanimation;
 
+import android.content.Context;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,81 +52,23 @@ public class RecylerAdapter extends RecyclerView.Adapter<RecylerAdapter.ViewHold
         public RelativeLayout relativeLayout;
         public ViewHolder(View itemView) {
             super(itemView);
-            this.textView = (TextView) itemView;
+            this.textView = (TextView) itemView.findViewById(R.id.email_title);
+            this.imageView = (ImageView) itemView.findViewById(R.id.image);
 
         }
 
         public void bind(final OnItemClickListener listener, final int position, String data){
-            textView.setText(data);
-            itemView.setTransitionName(data);
+
+            final AnimatedVectorDrawableCompat drawableCompat =  AnimatedVectorDrawableCompat.create(imageView.getContext(), R.drawable.animate_drawable);
+            imageView.setImageDrawable(drawableCompat);
+            textView.setText(TextUtils.concat("S", data));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(itemView , position);
+                    drawableCompat.start();
                 }
             });
         }
     }
 }
-
-
-//private inner class EmailAdapter : RecyclerView.Adapter<EmailViewHolder>() {
-//private var emails: List<String> = emptyList()
-//
-//        fun setData(emails: List<String>) {
-//        this.emails = emails
-//        notifyDataSetChanged()
-//        }
-//
-//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmailViewHolder =
-//        EmailViewHolder(LayoutInflater.from(parent.context).inflate(layout.list_item, parent, false))
-//
-//        override fun onBindViewHolder(holder: EmailViewHolder, position: Int) {
-//        fun onViewClick() {
-//        tapPosition = position
-//        holder.itemView.getGlobalVisibleRect(viewRect)
-//
-//        (this@EmailListFragment.exitTransition as Transition).epicenterCallback =
-//        object : Transition.EpicenterCallback() {
-//        override fun onGetEpicenter(transition: Transition) = viewRect
-//        }
-//
-//        val sharedElementTransition = TransitionSet()
-//        .addTransition(ChangeBounds())
-//        .addTransition(ChangeTransform())
-//        .addTransition(ChangeImageTransform()).apply {
-//        duration = TRANSITION_DURATION
-//        setCommonInterpolator(transitionInterpolator)
-//        }
-//
-//        val fragment = DetailsFragment().apply {
-//        sharedElementEnterTransition = sharedElementTransition
-//        sharedElementReturnTransition = sharedElementTransition
-//        }
-//
-//        activity!!.supportFragmentManager
-//        .beginTransaction()
-//        .setReorderingAllowed(true)
-//        .replace(R.id.container, fragment)
-//        .addToBackStack(null)
-//        .addSharedElement(holder.itemView, getString(R.string.transition_name))
-//        .commit()
-//        }
-//
-//        holder.bindData(emails[position], ::onViewClick)
-//        }
-//
-//        override fun getItemCount() = emails.size
-//        }
-//        }
-//
-//private class EmailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//private var email: String? = null
-//
-//        fun bindData(email: String, expandHandler: () -> Unit) {
-//        this.email = email
-//        itemView.setOnClickListener { expandHandler() }
-//        itemView.transitionName = email
-//        (itemView as TextView).text = email
-//        }
-//        }

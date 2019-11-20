@@ -9,6 +9,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:background="@android:color/background_light"
+      android:layoutAnimation="@anim/layout_animation_slide_right"
       android:clipChildren="false"
       android:transitionGroup="false"/>
 
@@ -16,5 +17,6 @@
       android:id="@+id/progressBar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:visibility="gone"
       android:layout_gravity="center"/>
 </FrameLayout>
